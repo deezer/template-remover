@@ -158,10 +158,12 @@ class _TemplateRemover(object):
                 self._index = start
                 self._state = 'BLANK_TEMPLATE'
             elif tag == 'END':
-                assert self._state in ('BLANK_TEMPLATE', 'ECHO_TEMPLATE'), \
-                    (('It was in self._state %s but was expecting to be ' +
-                     'inside a tag. Read the note of the clean() method.') %
-                     self._state)
+                if self._state not in ('BLANK_TEMPLATE', 'ECHO_TEMPLATE'):
+                    # We got a closing tag but none was open. We decide to carry
+                    # on as it may be the case that it was because of a closing
+                    # dictionary in javascript like: var dict = {foo:{}}.
+                    # See the note on the clean() function for more details.
+                    continue
                 fill_char = fill_chars[self._state]
                 fill = fill_char * (end - self._index)
                 if self._state == 'BLANK_TEMPLATE':

@@ -153,3 +153,8 @@ class TestTemplateRemover(unittest.TestCase):
           
         '''
         self.assertEquals(expected, template_remover.clean_jinja(template))
+
+    def test_jinja_does_not_complain_with_double_braces(self):
+        template = '<script>var dict={foo:{}}</script>'
+        expected = '<script>var dict={foo:{}}</script>'
+        self.assertEquals(expected, template_remover.clean_jinja(template))
