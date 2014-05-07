@@ -159,8 +159,8 @@ class _TemplateRemover(object):
                 self._state = 'BLANK_TEMPLATE'
             elif tag == 'END':
                 assert self._state in ('BLANK_TEMPLATE', 'ECHO_TEMPLATE'), \
-                    ('It was in self._state %s but was expecting to be inside' +
-                     ' a tag. Read the note of the clean() method.' %
+                    (('It was in self._state %s but was expecting to be ' +
+                     'inside a tag. Read the note of the clean() method.') %
                      self._state)
                 fill_char = fill_chars[self._state]
                 fill = fill_char * (end - self._index)

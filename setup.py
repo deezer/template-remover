@@ -17,7 +17,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='template-remover',
-    version='0.1.3',
+    version='0.1.4',
     description='Remove the template markup from html files',
     long_description=open('README.rst').read(),
     author='Sebastian Kreft - Deezer',
