@@ -27,7 +27,8 @@ from __future__ import print_function
 from __future__ import unicode_literals
 
 try:
-    from cStringIO import StringIO
+    # StringIO is required as cStringIO does not allow to write unicode strings.
+    from StringIO import StringIO
 except ImportError:
     from io import StringIO
 

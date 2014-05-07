@@ -106,6 +106,12 @@ class TestTemplateRemover(unittest.TestCase):
             template_remover.clean_php('  <?php ?>  placeholder  ')
         )
 
+    def test_unicode(self):
+        self.assertEquals(
+            'ni\xf1o',
+            template_remover.clean_php('ni\xf1o')
+        )
+
     def test_php_comprehensive(self):
         template = '''<html>
           <body>
