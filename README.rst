@@ -7,6 +7,10 @@ Template Remover
 .. image:: https://travis-ci.org/deezer/template-remover.png?branch=master
     :target: https://travis-ci.org/deezer/template-remover
 
+.. image:: https://coveralls.io/repos/deezer/template-remover/badge.png?branch=master
+    :target: https://coveralls.io/r/deezer/template-remover?branch=master
+
+
 Template remover is a tool to remove the PHP and Jinja markup from HTML files.
 
 Motivation
@@ -54,7 +58,8 @@ Python Versions
 ---------------
 
 Python 2.7 is supported, and it should also work for Python 3.2 and 3.3. Python
-2.6 is not supported because of the lack of subprocess.check_output.
+2.6 is not officially supported because assertRaises has different semantics,
+althought all the other tests pass.
 
 Development
 -----------
