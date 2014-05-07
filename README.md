@@ -1,4 +1,0 @@
-template-remover
-================
-
-Template remover
