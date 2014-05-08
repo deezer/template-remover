@@ -111,6 +111,10 @@ class TestTemplateRemover(unittest.TestCase):
             'ni\xf1o',
             template_remover.clean_php('ni\xf1o')
         )
+        self.assertEquals(
+            '\xe9',
+            template_remover.clean_php('\xe9')
+        )
 
     def test_php_comprehensive(self):
         template = '''<html>

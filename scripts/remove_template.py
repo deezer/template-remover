@@ -34,6 +34,8 @@ from __future__ import division
 from __future__ import print_function
 from __future__ import unicode_literals
 
+import codecs
+import io
 import sys
 
 import docopt
@@ -46,11 +48,16 @@ __VERSION__ = '0.1'
 
 def main():
     """Entry point for remove_template."""
+
+    # Wrap sys stdout for python 2, so print can understand unicode.
+    if sys.version_info[0] < 3:
+        sys.stdout = codecs.getwriter("utf-8")(sys.stdout)
+
     options = docopt.docopt(__doc__,
                             help=True,
                             version='template_remover v%s' % __VERSION__)
 
-    sys.stdout.write(template_remover.clean(open(options['FILENAME']).read()))
+    print(template_remover.clean(io.open(options['FILENAME']).read()))
 
     return 0
 
