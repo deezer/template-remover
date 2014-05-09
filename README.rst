@@ -48,7 +48,7 @@ Below are example of how template_remover.py is used::
 Installation
 ------------
 
-You can install, upgrade or uninstall git-lint with these commands::
+You can install, upgrade or uninstall template-remover with these commands::
 
   $ pip install template-remover
   $ pip install --upgrade template-remover
@@ -57,7 +57,7 @@ You can install, upgrade or uninstall git-lint with these commands::
 Python Versions
 ---------------
 
-Python 2.7, 3.2 and 3.3 are supported.
+Python 2.7 is officially supported, 3.2, 3.3 and 3.4 should also work.
 
 Development
 -----------
