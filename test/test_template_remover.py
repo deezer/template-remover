@@ -162,3 +162,42 @@ class TestTemplateRemover(unittest.TestCase):
         template = '<script>var dict={foo:{}}</script>'
         expected = '<script>var dict={foo:{}}</script>'
         self.assertEquals(expected, template_remover.clean_jinja(template))
+
+    def test_mako_comprehensive(self):
+        template = '''<html>
+          <body>
+          
+          <a title="${"this is some text" | u}">Foo</a>
+          % if x == 5:
+            <a href="${foo}"><a>
+          % endif
+          <%
+            x = db.get_resource('foo')
+            y = [z.element for z in x if x.frobnizzle==5]
+          %>
+          <%include file="foo.txt"/>
+          ## Comment
+          <%def name="foo" buffered="True">
+            this is a def
+          </%def>
+          
+        '''
+        expected = '''<html>
+          <body>
+          
+          <a title="00000000000000000000000000">Foo</a>
+
+            <a href="000000"><a>
+
+
+
+
+
+
+
+
+            this is a def
+
+          
+        '''
+        self.assertEquals(expected, template_remover.clean_mako(template))

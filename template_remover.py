@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Replaces the template markup (PHP, Jinja) from an HTML file.
+"""Replaces the template markup (PHP, Jinja, Mako) from an HTML file.
 
 It replaces the markup so the lines and positions of actual HTML content is
 preserved.
@@ -50,6 +50,13 @@ JINJA_START_TAG = r'{%'
 JINJA_START_ECHO = r'{{'
 JINJA_END_TAG = r'%}'
 JINJA_END_ECHO = r'}}'
+
+# Mako patterns
+MAKO_START_ECHO = r'\${'
+MAKO_END_ECHO = r'}'
+MAKO_START_TAG = (
+    r'(</?%|%\s*(end)?(if|else|elif|for|while|try|catch|except|finally)|##)')
+MAKO_END_TAG = r'([%/]?>|$)'
 
 
 def get_pattern(echo_tags, start_tags, end_tags):
@@ -90,26 +97,32 @@ PHP_PATTERN = get_pattern(
     [PHP_START_TAG, PHP_START_TAG_SHORT],
     [PHP_END_TAG])
 
+MAKO_PATTERN = get_pattern(
+    [MAKO_START_ECHO],
+    [MAKO_START_TAG],
+    [MAKO_END_TAG, MAKO_END_ECHO])
+
 ALL_PATTERN = get_pattern(
     [PHP_START_ECHO, PHP_START_TAG_WITH_ECHO, PHP_START_TAG_SHORT_WITH_ECHO,
-        JINJA_START_ECHO],
-    [PHP_START_TAG, PHP_START_TAG_SHORT, JINJA_START_TAG],
-    [PHP_END_TAG, JINJA_END_TAG, JINJA_END_ECHO])
+        JINJA_START_ECHO, MAKO_START_ECHO],
+    [PHP_START_TAG, PHP_START_TAG_SHORT, JINJA_START_TAG, MAKO_START_TAG],
+    [PHP_END_TAG, JINJA_END_TAG, JINJA_END_ECHO, MAKO_END_TAG, MAKO_END_ECHO])
 
 
 def _get_tag(match):
     groups = match.groupdict()
-    if groups.get('echo'):
+    if groups.get('echo') is not None:
         return 'ECHO'
-    elif groups.get('end'):
+    elif groups.get('end') is not None:
         return 'END'
-    elif groups.get('start'):
+    elif groups.get('start') is not None:
         return 'START'
-    elif groups.get('newline'):
+    elif groups.get('newline') is not None:
         return 'NEWLINE'
-    elif groups.get('spaces'):
+    elif groups.get('spaces') is not None:
         return 'SPACES'
 
+    print(groups)
     assert False, ('Only the groups "echo", "end", "start", "newline" and ' +
                    '"spaces" are allowed. Please correct your pattern or use ' +
                    'the method get_pattern() to construct it.')
@@ -261,3 +274,11 @@ def clean_jinja(html_content):
     See clean() for more details.
     """
     return clean(html_content, pattern=JINJA_PATTERN)
+
+
+def clean_mako(html_content):
+    """Removes the Mako markup from the supplied string.
+
+    See clean() for more details.
+    """
+    return clean(html_content, pattern=MAKO_PATTERN)
